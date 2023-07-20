@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 @main
-struct TheMovieSwiftUIPADCApp: App {
+struct TheMovieSwiftUIPADCApp: SwiftUI.App {
+    
+    init() {
+        let config = Realm.Configuration(deleteRealmIfMigrationNeeded:true)
+        Realm.Configuration.defaultConfiguration = config
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()
+            //GenreTabLayoutView()
+            //MovieDetailScreen()
         }
     }
 }

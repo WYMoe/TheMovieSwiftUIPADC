@@ -1,0 +1,41 @@
+//
+//  Dimensions.swift
+//  TheMovieSwiftUIPADC
+//
+//  Created by Wai Yan Moe on 18/04/2023.
+//
+
+import Foundation
+
+//Generic Dimensions
+let MARGIN_SMALL = 4.0
+let MARGIN_MEDIUM = 8.0
+let MARGIN_CARD_MEDIUM_2 = 12.0
+let MARGIN_MEDIUM_2 = 16.0
+let MARGIN_MEDIUM_3 = 20.0
+let MARGIN_LARGE = 24.0
+let MARGIN_XLARGE = 32.0
+let MARGIN_XXLARGE = 48.0
+
+let TEXT_SMALL = 12.0
+let TEXT_REGULAR = 14.0
+let TEXT_REGULAR_2X = 16.0
+let TEXT_REGULAR_3X = 20.0
+let TEXT_HEADING_1X = 24.0
+let TEXT_HEADING_2X = 28.0
+let TEXT_BIG = 32.0
+
+
+//App specific demensions
+let BANNER_IMAGE_HEIGHT = 250.0
+let BANNER_SECTION_HEIGHT = 280.0
+
+let GENRE_TAB_INDICATOR_HEIGHT = 2.0
+let SHOWCASE_ITEM_WIDTH = 300.0
+let SHOWCASE_ITEM_HEIGHT = 200.0
+
+let ACTOR_ITEM_WIDTH = 168.0
+let ACTOR_ITEM_HEIGHT = 220.0
+
+let MOVIE_DETAILS_APPBAR_HEIGHT = 300.0
+let YEAR_VIEW_WIDTH = 72.0
