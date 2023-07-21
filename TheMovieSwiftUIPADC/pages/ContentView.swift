@@ -150,6 +150,11 @@ struct ContentView: View {
         } onFailure: { error in
             print(error)
         }
+        
+        //database
+        self.mNowPlayingMovies = mMovieModel.getNowPlayingMoviesFromDatabase()
+        self.mTopRatedMovies = mMovieModel.getTopRatedMoviesFromDatabase()
+        self.mPopularMovies = mMovieModel.getPopularMoviesFromDatabase()
 
     }
     

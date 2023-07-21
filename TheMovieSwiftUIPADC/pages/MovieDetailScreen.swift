@@ -89,6 +89,9 @@ struct MovieDetailScreen: View {
         } onFailure: { error in
             
         }
+        
+        //database
+        mMovieVO = mMovieModel.getMovieByIdFromDatabase(id: movieId)
 
 
        
