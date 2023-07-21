@@ -465,7 +465,7 @@
 /* Begin PBXFileReference section */
 		004FC07CF5DC32561B8F39F24846D613 /* RLMSchema.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RLMSchema.h; path = include/RLMSchema.h; sourceTree = "<group>"; };
 		006242B7968098075A217F7BA01E0351 /* RLMArray.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RLMArray.h; path = include/RLMArray.h; sourceTree = "<group>"; };
-		013801DE182D95443AEC12AC7BD35E34 /* Pods-TheMovieSwiftUIPADC */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-TheMovieSwiftUIPADC"; path = Pods_TheMovieSwiftUIPADC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		013801DE182D95443AEC12AC7BD35E34 /* Pods_TheMovieSwiftUIPADC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TheMovieSwiftUIPADC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		014E536620A8647C11980B7528B4770F /* RLMAnalytics.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; name = RLMAnalytics.mm; path = Realm/RLMAnalytics.mm; sourceTree = "<group>"; };
 		02153209D97BFA33B8BF07215F7BDB4C /* Request.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Request.swift; path = Source/Request.swift; sourceTree = "<group>"; };
 		033227691E0E2B19E07AE9B8BFF380F0 /* ParameterEncoding.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ParameterEncoding.swift; path = Source/ParameterEncoding.swift; sourceTree = "<group>"; };
@@ -615,7 +615,7 @@
 		90D01B2F9E744F3EA6F2C28407DC2128 /* RealmKeyedCollection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RealmKeyedCollection.swift; path = RealmSwift/RealmKeyedCollection.swift; sourceTree = "<group>"; };
 		918307F3AAB563E549D83E67A2BED3FE /* RLMThreadSafeReference.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; name = RLMThreadSafeReference.mm; path = Realm/RLMThreadSafeReference.mm; sourceTree = "<group>"; };
 		919483295B11D13A121E8CF81E5BF49C /* RLMRealm+Sync.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "RLMRealm+Sync.h"; path = "include/RLMRealm+Sync.h"; sourceTree = "<group>"; };
-		921BE4A82C4A7A5C72A0C6F8B8FEF200 /* Realm */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Realm; path = Realm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		921BE4A82C4A7A5C72A0C6F8B8FEF200 /* Realm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Realm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		921CC0FA3F478C13BF8D2BD0A8C79AA7 /* Events.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Events.swift; path = RealmSwift/Events.swift; sourceTree = "<group>"; };
 		92B2BC83F4D5030BEFA50A30F9411198 /* RLMManagedSet.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; name = RLMManagedSet.mm; path = Realm/RLMManagedSet.mm; sourceTree = "<group>"; };
 		9496222AE2E072562962E97ECDAA8C0C /* RLMSyncSession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RLMSyncSession.h; path = include/RLMSyncSession.h; sourceTree = "<group>"; };
@@ -826,8 +826,8 @@
 			isa = PBXGroup;
 			children = (
 				5D797E9A5C5782CE845840781FA1CC81 /* Alamofire.framework */,
-				013801DE182D95443AEC12AC7BD35E34 /* Pods-TheMovieSwiftUIPADC */,
-				921BE4A82C4A7A5C72A0C6F8B8FEF200 /* Realm */,
+				013801DE182D95443AEC12AC7BD35E34 /* Pods_TheMovieSwiftUIPADC.framework */,
+				921BE4A82C4A7A5C72A0C6F8B8FEF200 /* Realm.framework */,
 				437919EE08EC6BFCCBAC3BD346309742 /* RealmSwift */,
 			);
 			name = Products;
@@ -1299,7 +1299,7 @@
 			);
 			name = "Pods-TheMovieSwiftUIPADC";
 			productName = Pods_TheMovieSwiftUIPADC;
-			productReference = 013801DE182D95443AEC12AC7BD35E34 /* Pods-TheMovieSwiftUIPADC */;
+			productReference = 013801DE182D95443AEC12AC7BD35E34 /* Pods_TheMovieSwiftUIPADC.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		68494F30B4A13F8E5E88BCCAEC25B0A4 /* Realm */ = {
@@ -1321,7 +1321,7 @@
 			);
 			name = Realm;
 			productName = Realm;
-			productReference = 921BE4A82C4A7A5C72A0C6F8B8FEF200 /* Realm */;
+			productReference = 921BE4A82C4A7A5C72A0C6F8B8FEF200 /* Realm.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		782725687624F8665247B84AB581BEB1 /* RealmSwift */ = {

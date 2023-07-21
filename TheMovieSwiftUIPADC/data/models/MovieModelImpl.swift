@@ -7,6 +7,9 @@
 
 import Foundation
 struct MovieModelImpl : MovieModel {
+   
+    
+    
     static let shared = MovieModelImpl()
     
     private init(){
@@ -14,19 +17,32 @@ struct MovieModelImpl : MovieModel {
     }
     
     //data agent
-    
     let mDataAgent : MovieDataAgent = MovieDataAgentImpl.shared
     
+    //dao
+    let mMovieDao = MovieDAO.shared
+    
+    
     func getNowPlayingMovies(page: Int, onSuccess: @escaping ([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void) {
-        mDataAgent.getNowPlayingMovies(page: page, onSuccess: onSuccess, onFailure: onFailure)
+        mDataAgent.getNowPlayingMovies(page: page, onSuccess: { nowPlayingMovies in
+            onSuccess(nowPlayingMovies)
+            self.mMovieDao.saveMovies(movies: nowPlayingMovies, for: MOVIE_TYPE_NOW_PLAYING)
+        }, onFailure: onFailure)
+
     }
     
     func getPopularMovies(page: Int, onSuccess: @escaping ([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void) {
-        mDataAgent.getPopularMovies(page: page, onSuccess: onSuccess, onFailure: onFailure)
+        mDataAgent.getPopularMovies(page: page, onSuccess: { popularMovies in
+            onSuccess(popularMovies)
+            self.mMovieDao.saveMovies(movies: popularMovies, for: MOVIE_TYPE_POPULAR)
+        }, onFailure: onFailure)
     }
     
     func getTopRatedMovies(page: Int, onSuccess: @escaping ([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void) {
-        mDataAgent.getTopRatedMovies(page: page, onSuccess: onSuccess, onFailure: onFailure)
+        mDataAgent.getTopRatedMovies(page: page, onSuccess: { topRatedMovies in
+            onSuccess(topRatedMovies)
+            self.mMovieDao.saveMovies(movies: topRatedMovies, for: MOVIE_TYPE_TOP_RATED)
+        }, onFailure: onFailure)
     }
     
     func getGenres(onSuccess: @escaping ([GenreVO]) -> Void, onFailure: @escaping (Error) -> Void) {
@@ -42,11 +58,42 @@ struct MovieModelImpl : MovieModel {
     }
     
     func getMovieDetails(movieId: Int, onSuccess: @escaping (MovieVO) -> Void, onFailure: @escaping (Error) -> Void) {
-        mDataAgent.getMovieDetails(movieId: movieId, onSuccess: onSuccess, onFailure: onFailure)
+        mDataAgent.getMovieDetails(movieId: movieId, onSuccess: { movieDetails in
+            onSuccess(movieDetails)
+            
+            let movieFromDatabase = self.getMovieByIdFromDatabase(id: movieId)
+            
+            self.mMovieDao.saveMovies(movies: [movieDetails], for: movieFromDatabase?.type ?? "")
+            
+        }, onFailure: onFailure)
     }
     
     func getCredits(movieId: Int, onSuccess: @escaping ([ActorVO], [ActorVO]) -> Void, onFailure: @escaping (Error) -> Void) {
         mDataAgent.getCredits(movieId: movieId, onSuccess: onSuccess, onFailure: onFailure)
+    }
+    
+    
+    //database
+    func getAllMoviesFromDatabase() -> [MovieVO] {
+       return mMovieDao.getAllMovies()
+    }
+    
+    func getMovieByIdFromDatabase(id: Int) -> MovieVO? {
+        return mMovieDao.getMovieById(movieId: id)
+    }
+    
+    func getNowPlayingMoviesFromDatabase() -> [MovieVO] {
+        return mMovieDao.getMoviesByType(type: MOVIE_TYPE_NOW_PLAYING)
+    }
+    
+    func getPopularMoviesFromDatabase() -> [MovieVO] {
+        return mMovieDao.getMoviesByType(type: MOVIE_TYPE_POPULAR)
+
+    }
+    
+    func getTopRatedMoviesFromDatabase() -> [MovieVO] {
+        return mMovieDao.getMoviesByType(type: MOVIE_TYPE_TOP_RATED)
+
     }
     
     

@@ -138,11 +138,11 @@ struct ContentView: View {
         }
         
         //top rated movies
-        mMovieModel.getTopRatedMovies(page: 1) { movies in
-            self.mTopRatedMovies = movies
-        } onFailure: { error in
-            
-        }
+//        mMovieModel.getTopRatedMovies(page: 1) { movies in
+//            self.mTopRatedMovies = movies
+//        } onFailure: { error in
+//            
+//        }
         
         //actors
         mMovieModel.getActors { actors in
@@ -151,6 +151,10 @@ struct ContentView: View {
             print(error)
         }
 
+        //database
+        self.mNowPlayingMovies = mMovieModel.getNowPlayingMoviesFromDatabase()
+        self.mTopRatedMovies = mMovieModel.getTopRatedMoviesFromDatabase()
+        self.mPopularMovies = mMovieModel.getPopularMoviesFromDatabase()
     }
     
     func getMoviesByGenre(genreId:Int) {

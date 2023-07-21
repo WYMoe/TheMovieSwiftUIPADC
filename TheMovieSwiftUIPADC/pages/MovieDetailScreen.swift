@@ -90,7 +90,8 @@ struct MovieDetailScreen: View {
             
         }
 
-
+        //database
+        self.mMovieVO = mMovieModel.getMovieByIdFromDatabase(id: movieId)
        
     }
 }
@@ -243,8 +244,8 @@ struct TimeGenreAndFavView: View {
                 .foregroundColor(.white)
                 .font(.system(size: TEXT_REGULAR))
                 .fontWeight(.medium)
-            
-            ForEach(mMovieVO?.genres?.prefix(2) ?? [],id: \.id){ genre in
+            //genres
+            ForEach(mMovieVO?.getGenresArray().prefix(2) ?? [],id: \.id){ genre in
                 
                 Text(genre.name ?? "")
                     .foregroundColor(.white)

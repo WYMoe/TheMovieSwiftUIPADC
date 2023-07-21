@@ -22,4 +22,12 @@ protocol MovieModel {
     func getMovieDetails(movieId : Int, onSuccess : @escaping(MovieVO) -> Void, onFailure: @escaping (Error) -> Void)
     
     func getCredits(movieId : Int, onSuccess : @escaping([ActorVO],[ActorVO]) -> Void, onFailure: @escaping (Error) -> Void)
+    
+    //database
+    
+    func getAllMoviesFromDatabase() -> [MovieVO]
+    func getMovieByIdFromDatabase(id:Int) -> MovieVO?
+    func getNowPlayingMoviesFromDatabase() -> [MovieVO]
+    func getPopularMoviesFromDatabase() -> [MovieVO]
+    func getTopRatedMoviesFromDatabase() -> [MovieVO]
 }

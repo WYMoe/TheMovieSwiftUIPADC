@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import RealmSwift
 
-
-struct ProductionCompanyVO : Codable {
-    var id : Int?
-    var loginPath : String?
-    var name : String?
-    var originCountry : String?
+@objcMembers
+class ProductionCompanyVO : Object,Codable {
+    @Persisted(primaryKey: true) dynamic var id : Int?
+    @Persisted dynamic var loginPath : String?
+    @Persisted dynamic var name : String?
+    @Persisted dynamic var originCountry : String?
     
     enum CodingKeys: String, CodingKey {
         case id

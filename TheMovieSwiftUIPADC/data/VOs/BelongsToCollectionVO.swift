@@ -6,13 +6,15 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct BelongsToCollectionVO : Codable {
+@objcMembers
+class BelongsToCollectionVO : Object, Codable {
     
-    var id : Int?
-    var name : String?
-    var posterPath : String?
-    var backdropPath : String?
+    @Persisted(primaryKey: true) dynamic var id : Int?
+    @Persisted dynamic var name : String?
+    @Persisted dynamic var posterPath : String?
+    @Persisted dynamic var backdropPath : String?
     
     enum CodingKeys: String, CodingKey{
         case id
