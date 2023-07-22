@@ -173,6 +173,7 @@
 		577116F82A6A3BCC00BD2673 /* persistance */ = {
 			isa = PBXGroup;
 			children = (
+				57D936D12A6C40ED00875F23 /* object */,
 				577116F92A6A3BD900BD2673 /* MovieDAO.swift */,
 			);
 			path = persistance;
@@ -253,6 +254,13 @@
 				5776B15629F3B4E3008CA326 /* ActorsOrCreatorsListView.swift */,
 			);
 			path = components;
+			sourceTree = "<group>";
+		};
+		57D936D12A6C40ED00875F23 /* object */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = object;
 			sourceTree = "<group>";
 		};
 		EA7F39A73A060AEC627B2FFB /* Pods */ = {
