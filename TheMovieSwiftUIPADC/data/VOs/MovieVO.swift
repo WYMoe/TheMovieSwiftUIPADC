@@ -9,38 +9,40 @@ import Foundation
 import RealmSwift
 
 @objcMembers
-class MovieVO : Object,Identifiable,Codable {
+class MovieVO : Hashable,Identifiable,Codable {
    
-  
+    func hash(into hasher: inout Hasher) {
+        return hasher.combine(id)
+    }
  
     
     
-   @Persisted dynamic var adult : Bool?
-   @Persisted dynamic var backdropPath : String?
-   @Persisted dynamic var belongsToCollection: BelongsToCollectionVO?
-   @Persisted dynamic var budget : Int?
-   let genres  = List<GenreVO>()
-   @Persisted dynamic var homepage : String?
-   @Persisted(primaryKey: true) dynamic var id : Int?
-   @Persisted dynamic var imdbID : String?
-   @Persisted dynamic var originalLanguage : String?
-   @Persisted dynamic var originalTitle: String?
-   @Persisted dynamic var overview: String?
-   @Persisted dynamic var popularity: Double?
-   @Persisted dynamic var posterPath: String?
-   let productionCompanies = List<ProductionCompanyVO>()
-   let productionCountries = List<ProductionCountryVO>()
-   @Persisted dynamic var releaseDate : String?
-   @Persisted dynamic var revenue: Int?
-   @Persisted dynamic var runtime: Int?
-   let spokenLanguages = List<SpokenLanguageVO>()
-   @Persisted dynamic var status : String?
-   @Persisted dynamic var tagline: String?
-   @Persisted dynamic var title : String?
-   @Persisted dynamic var video: Bool?
-   @Persisted dynamic var voteAverage: Double?
-   @Persisted dynamic var voteCount: Int?
-   @Persisted dynamic var type : String?
+    var adult : Bool?
+    var backdropPath : String?
+    var belongsToCollection: BelongsToCollectionVO?
+    var budget : Int?
+    var genres : [GenreVO]?
+    var homepage : String?
+    var id : Int?
+    var imdbID : String?
+    var originalLanguage : String?
+    var originalTitle: String?
+    var overview: String?
+    var popularity: Double?
+    var posterPath: String?
+    var productionCompanies : [ProductionCompanyVO]?
+    var productionCountries : [ProductionCountryVO]?
+    var releaseDate : String?
+    var revenue: Int?
+    var runtime: Int?
+    var spokenLanguages : [SpokenLanguageVO]?
+    var status : String?
+    var tagline: String?
+    var title : String?
+    var video: Bool?
+    var voteAverage: Double?
+    var voteCount: Int?
+    var type : String?
     
     
     enum CodingKeys: String,CodingKey{
@@ -79,21 +81,17 @@ class MovieVO : Object,Identifiable,Codable {
         return "\(BASE_IMAGE_URL)\(posterPath ?? "")"
     }
     func getGenresAsCommaSeparatedString() -> String {
-        return genres.map({ genre in
+        return genres?.map({ genre in
             genre.name ?? ""
-        }).joined(separator: ",")
+        }).joined(separator: ",") ?? ""
     }
     func getProductionCountryAsCommaSeparatedString() -> String {
-        return productionCountries.map({ productionCountry in
+        return productionCountries?.map({ productionCountry in
             productionCountry.name ?? ""
-        }).joined(separator: ",")
+        }).joined(separator: ",") ?? ""
     }
   
-    //realm
-    func getGenresArray()-> [GenreVO] {
-        return Array(genres)
-    }
-    
+   
     
     // custom euqtable
     static func == (lhs: MovieVO, rhs: MovieVO) -> Bool {
