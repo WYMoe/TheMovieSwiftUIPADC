@@ -26,6 +26,7 @@ struct MovieModelImpl : MovieModel {
     func getNowPlayingMovies(page: Int, onSuccess: @escaping ([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void) {
         mDataAgent.getNowPlayingMovies(page: page, onSuccess: { nowPlayingMovies in
             onSuccess(nowPlayingMovies)
+            //save to db
             self.mMovieDao.saveMovies(movies: nowPlayingMovies, for: MOVIE_TYPE_NOW_PLAYING)
         }, onFailure: onFailure)
 
@@ -34,6 +35,8 @@ struct MovieModelImpl : MovieModel {
     func getPopularMovies(page: Int, onSuccess: @escaping ([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void) {
         mDataAgent.getPopularMovies(page: page, onSuccess: { popularMovies in
             onSuccess(popularMovies)
+            
+            //save to db
             self.mMovieDao.saveMovies(movies: popularMovies, for: MOVIE_TYPE_POPULAR)
         }, onFailure: onFailure)
     }
@@ -41,6 +44,7 @@ struct MovieModelImpl : MovieModel {
     func getTopRatedMovies(page: Int, onSuccess: @escaping ([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void) {
         mDataAgent.getTopRatedMovies(page: page, onSuccess: { topRatedMovies in
             onSuccess(topRatedMovies)
+            //save to db
             self.mMovieDao.saveMovies(movies: topRatedMovies, for: MOVIE_TYPE_TOP_RATED)
         }, onFailure: onFailure)
     }
@@ -61,9 +65,11 @@ struct MovieModelImpl : MovieModel {
         mDataAgent.getMovieDetails(movieId: movieId, onSuccess: { movieDetails in
             onSuccess(movieDetails)
             
-            let movieFromDatabase = self.getMovieByIdFromDatabase(id: movieId)
+           
             
-            self.mMovieDao.saveMovies(movies: [movieDetails], for: movieFromDatabase?.type ?? "")
+            
+            //save to db
+            self.mMovieDao.saveMovieDetail(movie: movieDetails)
             
         }, onFailure: onFailure)
     }

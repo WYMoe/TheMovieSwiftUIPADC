@@ -8,8 +8,8 @@
 import Foundation
 import RealmSwift
 
-@objcMembers
-class MovieVO : Hashable,Identifiable,Codable {
+
+struct MovieVO : Codable,Hashable{
    
     func hash(into hasher: inout Hasher) {
         return hasher.combine(id)
@@ -93,11 +93,96 @@ class MovieVO : Hashable,Identifiable,Codable {
   
    
     
-    // custom euqtable
+     //custom euqtable
     static func == (lhs: MovieVO, rhs: MovieVO) -> Bool {
         return (lhs.id == rhs.id) && (lhs.overview == rhs.overview)
     }
     
+    //to movie obj
+    func toMovieObj(type:String) -> MovieObject {
+        let movieObj = MovieObject()
+        movieObj.adult = adult
+        movieObj.backdropPath = backdropPath
+        movieObj.belongsToCollection = belongsToCollection?.toBelongsToCollectionObj()
+        movieObj.budget = budget
+        genres?.forEach({ genreVO in
+            movieObj.genres.append(genreVO.toGenreObj())
+        })
+       
+        movieObj.homepage = homepage
+        movieObj.id = id
+        movieObj.imdbID = imdbID
+        movieObj.originalLanguage = originalLanguage
+        movieObj.originalTitle = originalTitle
+        movieObj.overview = overview
+        movieObj.popularity = popularity
+        movieObj.posterPath = posterPath
+        productionCompanies?.forEach({ companyVO in
+            movieObj.productionCompanies.append(companyVO.toProductionCompanyObj())
+        })
+        productionCountries?.forEach({ countryVO in
+            movieObj.productionCountries.append(countryVO.toProductionCountryObj())
+        })
+        movieObj.releaseDate = releaseDate
+        movieObj.revenue = revenue
+        movieObj.runtime = runtime
+        spokenLanguages?.forEach({ languageVO in
+            movieObj.spokenLanguages.append(languageVO.toSpokenLanguageObj())
+        })
+        movieObj.status = status
+        movieObj.tagline = tagline
+        movieObj.title = title
+        movieObj.video = video
+        movieObj.voteAverage = voteAverage
+        movieObj.voteCount = voteCount
+        movieObj.type = type
+        
+        return movieObj
+    }
+    
+    
+    //to movie detail obj
+    func toMovieDetailObj() -> MovieDetailObject {
+        let movieObj = MovieDetailObject()
+        movieObj.adult = adult
+        movieObj.backdropPath = backdropPath
+        movieObj.belongsToCollection = belongsToCollection?.toBelongsToCollectionObj()
+        movieObj.budget = budget
+        genres?.forEach({ genreVO in
+            movieObj.genres.append(genreVO.toGenreObj())
+        })
+       
+        movieObj.homepage = homepage
+        movieObj.id = id
+        movieObj.imdbID = imdbID
+        movieObj.originalLanguage = originalLanguage
+        movieObj.originalTitle = originalTitle
+        movieObj.overview = overview
+        movieObj.popularity = popularity
+        movieObj.posterPath = posterPath
+        productionCompanies?.forEach({ companyVO in
+            movieObj.productionCompanies.append(companyVO.toProductionCompanyObj())
+        })
+        productionCountries?.forEach({ countryVO in
+            movieObj.productionCountries.append(countryVO.toProductionCountryObj())
+        })
+        movieObj.releaseDate = releaseDate
+        movieObj.revenue = revenue
+        movieObj.runtime = runtime
+        spokenLanguages?.forEach({ languageVO in
+            movieObj.spokenLanguages.append(languageVO.toSpokenLanguageObj())
+        })
+        movieObj.status = status
+        movieObj.tagline = tagline
+        movieObj.title = title
+        movieObj.video = video
+        movieObj.voteAverage = voteAverage
+        movieObj.voteCount = voteCount
+        movieObj.type = type
+        
+        return movieObj
+    }
+//    
     
     
 }

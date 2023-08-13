@@ -138,17 +138,17 @@ struct ContentView: View {
         }
         
         //top rated movies
-//        mMovieModel.getTopRatedMovies(page: 1) { movies in
-//            self.mTopRatedMovies = movies
-//        } onFailure: { error in
-//            
-//        }
+        mMovieModel.getTopRatedMovies(page: 1) { movies in
+            self.mTopRatedMovies = movies
+        } onFailure: { error in
+            
+        }
         
         //actors
         mMovieModel.getActors { actors in
             self.mActors = actors
         } onFailure: { error in
-            print(error)
+         //   print(error)
         }
 
         //database
@@ -159,7 +159,7 @@ struct ContentView: View {
     
     func getMoviesByGenre(genreId:Int) {
         mMovieModel.getMoviesByGenre(genreId: genreId) { movies in
-            self.mMoviesByGenre = movies //not updating?
+            self.mMoviesByGenre = movies 
         
         } onFailure: { error in
             

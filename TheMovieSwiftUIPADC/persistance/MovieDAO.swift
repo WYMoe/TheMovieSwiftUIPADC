@@ -15,6 +15,13 @@ class MovieDAO {
     
     private init(){
         
+        do {
+            let realmPath = try Realm().configuration.fileURL?.absoluteString ?? "undefined"
+            print("Default Realm is at : \( realmPath )")
+        } catch {
+            
+        }
+     
     }
     
     
@@ -24,12 +31,35 @@ class MovieDAO {
     func saveMovies(movies:[MovieVO],for type:String){
         do {
             let realm = try Realm()
-            movies.forEach { movie in
-                movie.type = type
+
+         let movieObjs =   movies.map { movieVO in
+            
+             movieVO.toMovieObj(type: type)
             }
             
             try realm.write({
-                realm.add(movies,update: .all)
+                
+                realm.add(movieObjs,update: .all)
+              //  print("save result : \(movieObjs)")
+            })
+        }catch {
+            let error = error as NSError
+            fatalError("Unresolved error : \(error) \(error.userInfo)")
+        }
+    }
+    
+    //save movie detail
+    func saveMovieDetail(movie:MovieVO){
+        do {
+            let realm = try Realm()
+
+         let movieObj = movie.toMovieDetailObj()
+            
+            
+            try realm.write({
+                
+                realm.add(movieObj,update: .all)
+               
             })
         }catch {
             let error = error as NSError
@@ -42,7 +72,11 @@ class MovieDAO {
     func getAllMovies()->[MovieVO]{
         do{
             let realm = try Realm()
-            return Array(realm.objects(MovieVO.self))
+            let results = realm.objects(MovieObject.self)
+         
+            return results.map { movieObj in
+                movieObj.toMovieVO()
+            }
         }catch {
             let error = error as NSError
             fatalError("Unresolved error : \(error) \(error.userInfo)")
@@ -54,10 +88,12 @@ class MovieDAO {
     func getMoviesByType(type:String)->[MovieVO]{
         do{
             let realm = try Realm()
-            let moviesByType = realm.objects(MovieVO.self).filter { movie in
+            let moviesByType = realm.objects(MovieObject.self).filter { movie in
                 movie.type == type
             }
-            return Array(moviesByType)
+            return moviesByType.map { movieObj in
+                movieObj.toMovieVO()
+            }
         }catch {
             let error = error as NSError
             fatalError("Unresolved error : \(error) \(error.userInfo)")
@@ -69,8 +105,9 @@ class MovieDAO {
     func getMovieById(movieId:Int) -> MovieVO?{
         do{
             let realm = try Realm()
-            
-            return realm.object(ofType: MovieVO.self, forPrimaryKey: movieId)
+            let result = realm.object(ofType: MovieDetailObject.self, forPrimaryKey: movieId)
+            //print("get result : \(result?.toMovieVO())")
+            return result?.toMovieVO()
         }catch {
             let error = error as NSError
             fatalError("Unresolved error : \(error) \(error.userInfo)")

@@ -1,15 +1,16 @@
 //
-//  MovieObject.swift
+//  MovieDetailObject.swift
 //  TheMovieSwiftUIPADC
 //
-//  Created by Wai Yan Moe on 22/07/2023.
+//  Created by Wai Yan Moe on 12/08/2023.
 //
 
+import Foundation
 import Foundation
 import RealmSwift
 
 @objcMembers
-class MovieObject : Object {
+class MovieDetailObject : Object {
    
   
  
@@ -46,14 +47,11 @@ class MovieObject : Object {
     
  
   
-    //realm
-//    func getGenresArray()-> [GenreVO] {
-//        return Array(genres)
-//    }
+
     
     
     // custom euqtable
-    static func == (lhs: MovieObject, rhs: MovieObject) -> Bool {
+    static func == (lhs: MovieDetailObject, rhs: MovieDetailObject) -> Bool {
         return (lhs.id == rhs.id) && (lhs.overview == rhs.overview)
     }
     

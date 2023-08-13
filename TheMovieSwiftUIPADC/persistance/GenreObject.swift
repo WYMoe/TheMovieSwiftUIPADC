@@ -35,5 +35,8 @@ class GenreObject : Object,Codable {
     
 
     
+    func toGenreVO() -> GenreVO {
+        return GenreVO(id: id,name: name,isSelected: isSelected)
+    }
 
 }

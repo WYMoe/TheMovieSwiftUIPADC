@@ -73,13 +73,18 @@ struct MovieDetailScreen: View {
             return
         }
         
-        debugPrint("detail movie id: \(movieId)")
+ 
         
+        //database
+        self.mMovieVO = mMovieModel.getMovieByIdFromDatabase(id: movieId)
+      
         //detail
         mMovieModel.getMovieDetails(movieId: movieId) { movieDetailVO in
             self.mMovieVO = movieDetailVO
+          
         } onFailure: { error in
             print(error)
+            
         }
         
         //credit
@@ -90,8 +95,6 @@ struct MovieDetailScreen: View {
             
         }
 
-        //database
-        self.mMovieVO = mMovieModel.getMovieByIdFromDatabase(id: movieId)
        
     }
 }
@@ -245,7 +248,7 @@ struct TimeGenreAndFavView: View {
                 .font(.system(size: TEXT_REGULAR))
                 .fontWeight(.medium)
             //genres
-            ForEach(mMovieVO?.getGenresArray().prefix(2) ?? [],id: \.id){ genre in
+            ForEach(mMovieVO?.genres?.prefix(2) ?? [],id: \.id){ genre in
                 
                 Text(genre.name ?? "")
                     .foregroundColor(.white)

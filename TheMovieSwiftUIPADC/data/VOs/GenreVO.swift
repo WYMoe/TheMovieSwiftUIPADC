@@ -8,30 +8,47 @@
 import Foundation
 import RealmSwift
 
-@objcMembers
 
-class GenreVO : Object,Codable {
-    @Persisted dynamic var id : Int?
-    @Persisted dynamic var name : String?
+
+struct GenreVO : Codable {
+     var id : Int?
+     var name : String?
     
     var isSelected : Bool = false
     
-    
-    override init() {
-        super.init()
-    }
-    
-    
-    init(id: Int? = nil, name: String? = nil, isSelected: Bool = false) {
-        super.init()
-        self.id = id
-        self.name = name
-        self.isSelected = isSelected
-    }
-    enum CodingKeys : String, CodingKey {
+    enum CodingKeys: CodingKey {
         case id
         case name
+      
     }
+    
+    
+    func toGenreObj() -> GenreObject {
+     
+        let genre = GenreObject()
+        
+        genre.id = id
+        genre.name = name
+        genre.isSelected = isSelected
+        
+        return genre
+    }
+    
+//    override init() {
+//        super.init()
+//    }
+//
+//
+//    init(id: Int? = nil, name: String? = nil, isSelected: Bool = false) {
+//        super.init()
+//        self.id = id
+//        self.name = name
+//        self.isSelected = isSelected
+//    }
+//    enum CodingKeys : String, CodingKey {
+//        case id
+//        case name
+//    }
     
 
     
