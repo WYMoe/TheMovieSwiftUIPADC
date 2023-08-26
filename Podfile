@@ -8,4 +8,6 @@ target 'TheMovieSwiftUIPADC' do
   # Pods for TheMovieSwiftUIPADC
   pod 'Alamofire'
   pod 'RealmSwift', '~>10'
+  pod 'RxSwift'
+  pod 'RxRealm'
 end
