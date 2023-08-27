@@ -7,7 +7,8 @@
 
 import Foundation
 import RealmSwift
-
+import RxSwift
+import RxRealm
 class MovieDAO {
     //singleton
     
@@ -94,6 +95,26 @@ class MovieDAO {
             return moviesByType.map { movieObj in
                 movieObj.toMovieVO()
             }
+            
+        }catch {
+            let error = error as NSError
+            fatalError("Unresolved error : \(error) \(error.userInfo)")
+        }
+    }
+
+    func getMoviesByTypeObservable(type:String) -> Observable<[MovieVO]>{
+        do {
+            let realm = try Realm()
+            let moviesByType = realm.objects(MovieObject.self).filter("type == %@",type)
+            return Observable.collection(from: moviesByType)
+                .map { realmResults in
+                    realmResults.toArray()
+                }.map { moviesObjs in
+                    moviesObjs.map { mObj in
+                        mObj.toMovieVO()
+                    }
+                }
+            
         }catch {
             let error = error as NSError
             fatalError("Unresolved error : \(error) \(error.userInfo)")

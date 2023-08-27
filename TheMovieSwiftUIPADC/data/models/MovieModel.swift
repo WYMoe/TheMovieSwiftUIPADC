@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import RxSwift
+
 protocol MovieModel {
     func getNowPlayingMovies(page : Int, onSuccess : @escaping([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void)
     
@@ -30,4 +32,10 @@ protocol MovieModel {
     func getNowPlayingMoviesFromDatabase() -> [MovieVO]
     func getPopularMoviesFromDatabase() -> [MovieVO]
     func getTopRatedMoviesFromDatabase() -> [MovieVO]
+    
+    //database with observable
+    
+    func getNowPlayingMoviesFromDatabaseObservable() -> Observable<[MovieVO]>
+    func getPopularMoviesFromDatabaseObservable() -> Observable<[MovieVO]>
+    func getTopRatedMoviesFromDatabaseObservable() -> Observable<[MovieVO]>
 }

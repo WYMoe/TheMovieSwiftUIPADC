@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import RxSwift
 struct ContentView: View {
     //navigation
  //   @State var isShowDetails: Bool = false
@@ -22,7 +22,7 @@ struct ContentView: View {
     @State var mMoviesByGenre : [MovieVO]? = nil
     @State var mActors : [ActorVO]? = nil
 
-    
+    let disposeBag = DisposeBag()
     var body: some View {
         NavigationStack {
             ZStack{
@@ -109,21 +109,49 @@ struct ContentView: View {
         
         
         //database
-        self.mNowPlayingMovies = mMovieModel.getNowPlayingMoviesFromDatabase()
-        self.mTopRatedMovies = mMovieModel.getTopRatedMoviesFromDatabase()
-        self.mPopularMovies = mMovieModel.getPopularMoviesFromDatabase()
+        mMovieModel.getNowPlayingMoviesFromDatabaseObservable()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
+                nowPlayingMovies in
+                self.mNowPlayingMovies = nowPlayingMovies
+            })
+            .disposed(by: disposeBag)
         
+        mMovieModel.getTopRatedMoviesFromDatabaseObservable()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
+                topRatedMovies in
+                self.mTopRatedMovies = topRatedMovies
+            })
+            .disposed(by: disposeBag)
+        
+        mMovieModel.getPopularMoviesFromDatabaseObservable()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
+                popularMovies in
+                self.mPopularMovies = popularMovies
+            })
+            .disposed(by: disposeBag)
         
         //now playing movies
-        mMovieModel.getNowPlayingMovies(page: 1) { movies in
-            self.mNowPlayingMovies = movies
+        mMovieModel.getNowPlayingMovies(page: 1) { _ in
+            
+        } onFailure: { error in
+            
+        }
+
+        
+        //popular movies
+        mMovieModel.getPopularMovies(page: 1) { _ in
+           
         } onFailure: { error in
         }
         
-        //popular movies
-        mMovieModel.getPopularMovies(page: 1) { movies in
-            self.mPopularMovies = movies
+        //top rated movies
+        mMovieModel.getTopRatedMovies(page: 1) { _ in
+         
         } onFailure: { error in
+            
         }
         
         //genres
@@ -145,12 +173,7 @@ struct ContentView: View {
            
         }
         
-        //top rated movies
-        mMovieModel.getTopRatedMovies(page: 1) { movies in
-            self.mTopRatedMovies = movies
-        } onFailure: { error in
-            
-        }
+      
         
         //actors
         mMovieModel.getActors { actors in

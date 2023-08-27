@@ -60,7 +60,7 @@ class MovieObject : Object {
     func toMovieVO() -> MovieVO {
         return MovieVO(adult:adult,backdropPath: backdropPath,belongsToCollection: belongsToCollection?.toBelongsToCollectionVO(),budget: budget,genres: genres.map({ genreObj in
             genreObj.toGenreVO()
-        }),homepage: homepage,id: id,imdbID: imdbID,originalLanguage:originalLanguage,originalTitle: originalTitle,overview: overview,popularity: popularity,productionCompanies: productionCompanies.map({ companyObj in
+        }),homepage: homepage,id: id,imdbID: imdbID,originalLanguage:originalLanguage,originalTitle: originalTitle,overview: overview,popularity: popularity,posterPath: posterPath, productionCompanies: productionCompanies.map({ companyObj in
             companyObj.toProductionCompanyVO()
         }),productionCountries: productionCountries.map({ countryObj in
             countryObj.toProductionCountyVO()

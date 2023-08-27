@@ -8,6 +8,8 @@
 import Foundation
 import RxSwift
 struct MovieModelImpl : MovieModel {
+  
+    
    
     
     
@@ -32,7 +34,7 @@ struct MovieModelImpl : MovieModel {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext : {
                 nowPlayingMovies in
-                    onSuccess(nowPlayingMovies)
+                   
                 
                     //save to db
                     self.mMovieDao.saveMovies(movies: nowPlayingMovies, for: MOVIE_TYPE_NOW_PLAYING)
@@ -49,7 +51,7 @@ struct MovieModelImpl : MovieModel {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
                 popularMovies in
-                onSuccess(popularMovies)
+              
                 //save to db
                 self.mMovieDao.saveMovies(movies: popularMovies, for: MOVIE_TYPE_POPULAR)
             }, onError: {
@@ -65,7 +67,7 @@ struct MovieModelImpl : MovieModel {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext : {
                 topratedMovies in
-                onSuccess(topratedMovies)
+               
                 //save to db
                 self.mMovieDao.saveMovies(movies: topratedMovies, for: MOVIE_TYPE_TOP_RATED)
             }, onError: {
@@ -174,6 +176,19 @@ struct MovieModelImpl : MovieModel {
     func getTopRatedMoviesFromDatabase() -> [MovieVO] {
         return mMovieDao.getMoviesByType(type: MOVIE_TYPE_TOP_RATED)
 
+    }
+    
+    //database with observable
+    func getNowPlayingMoviesFromDatabaseObservable() -> Observable<[MovieVO]> {
+        return mMovieDao.getMoviesByTypeObservable(type: MOVIE_TYPE_NOW_PLAYING)
+    }
+    
+    func getPopularMoviesFromDatabaseObservable() -> Observable<[MovieVO]> {
+        return mMovieDao.getMoviesByTypeObservable(type: MOVIE_TYPE_POPULAR)
+    }
+    
+    func getTopRatedMoviesFromDatabaseObservable() -> Observable<[MovieVO]> {
+        return mMovieDao.getMoviesByTypeObservable(type: MOVIE_TYPE_TOP_RATED)
     }
     
     
