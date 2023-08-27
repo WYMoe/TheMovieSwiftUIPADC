@@ -106,6 +106,14 @@ struct ContentView: View {
     }
     
     func requestData(){
+        
+        
+        //database
+        self.mNowPlayingMovies = mMovieModel.getNowPlayingMoviesFromDatabase()
+        self.mTopRatedMovies = mMovieModel.getTopRatedMoviesFromDatabase()
+        self.mPopularMovies = mMovieModel.getPopularMoviesFromDatabase()
+        
+        
         //now playing movies
         mMovieModel.getNowPlayingMovies(page: 1) { movies in
             self.mNowPlayingMovies = movies
@@ -151,10 +159,6 @@ struct ContentView: View {
          //   print(error)
         }
 
-        //database
-        self.mNowPlayingMovies = mMovieModel.getNowPlayingMoviesFromDatabase()
-        self.mTopRatedMovies = mMovieModel.getTopRatedMoviesFromDatabase()
-        self.mPopularMovies = mMovieModel.getPopularMoviesFromDatabase()
     }
     
     func getMoviesByGenre(genreId:Int) {

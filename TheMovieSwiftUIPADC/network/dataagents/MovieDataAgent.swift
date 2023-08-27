@@ -7,23 +7,24 @@
 
 import Foundation
 import Alamofire
+import RxSwift
 
 protocol MovieDataAgent {
     
-    func getNowPlayingMovies(page : Int, onSuccess : @escaping([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void)
+    func getNowPlayingMovies(page : Int) -> Observable<[MovieVO]>
     
-    func getPopularMovies(page : Int, onSuccess : @escaping([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void)
+    func getPopularMovies(page : Int) -> Observable<[MovieVO]>
     
-    func getTopRatedMovies(page : Int, onSuccess : @escaping([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void)
+    func getTopRatedMovies(page : Int) -> Observable<[MovieVO]>
     
-    func getGenres(onSuccess : @escaping([GenreVO]) -> Void, onFailure: @escaping (Error) -> Void)
+    func getGenres() -> Observable<[GenreVO]>
     
-    func getMoviesByGenre(genreId : Int?, onSuccess : @escaping([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void)
+    func getMoviesByGenre(genreId : Int?) -> Observable<[MovieVO]>
     
-    func getActors(onSuccess : @escaping([ActorVO]) -> Void, onFailure: @escaping (Error) -> Void)
+    func getActors() -> Observable<[ActorVO]>
     
-    func getMovieDetails(movieId : Int, onSuccess : @escaping(MovieVO) -> Void, onFailure: @escaping (Error) -> Void)
+    func getMovieDetails(movieId : Int) -> Observable<MovieVO>
     
-    func getCredits(movieId : Int, onSuccess : @escaping([ActorVO],[ActorVO]) -> Void, onFailure: @escaping (Error) -> Void)
+    func getCredits(movieId : Int) -> Observable<([ActorVO],[ActorVO])>
     
 }
