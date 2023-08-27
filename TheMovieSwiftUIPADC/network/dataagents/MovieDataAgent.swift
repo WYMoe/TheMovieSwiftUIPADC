@@ -27,4 +27,5 @@ protocol MovieDataAgent {
     
     func getCredits(movieId : Int) -> Observable<([ActorVO],[ActorVO])>
     
+    func searchMovie(query : String)-> Observable<[MovieVO]>
 }

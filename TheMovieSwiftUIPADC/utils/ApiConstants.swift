@@ -18,12 +18,12 @@ let ENDPOINT_GET_MOVIES_BY_GENRE = "/discover/movie"
 let ENDPOINT_GET_ACTORS = "/person/popular"
 let ENDPOINT_GET_MOVIE_DETAILS = "/movie/"
 let ENDPOINT_GET_CREDITS_BY_MOVIE = "/movie/"
-
+let ENDPOINT_SEARCH_MOVIE = "/search/movie"
 
 let PARAM_PAGE = "page"
 let PARAM_API_KEY = "api_key"
 let PARAM_WITH_GENRES = "with_genres"
-
+let PARAM_QUERY = "query"
 let API_KEY = "3c1df4e11dda694c743d0bfd1ab8d404"
 
 

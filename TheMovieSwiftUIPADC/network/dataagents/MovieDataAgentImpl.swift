@@ -105,4 +105,18 @@ class MovieDataAgentImpl : MovieDataAgent {
             }
     }
     
+    func searchMovie(query: String) -> Observable<[MovieVO]> {
+        let parameters : [String : Any] = [
+            PARAM_API_KEY : API_KEY,
+            PARAM_QUERY : query
+        ]
+        
+        return fetchDataWithParametersObservable(forEndPoint: ENDPOINT_SEARCH_MOVIE, parameters: parameters)
+            .map{ (movieListResponse : MovieListResponse) in
+                return movieListResponse.results ?? []
+            }
+            
+            
+    }
+    
 }

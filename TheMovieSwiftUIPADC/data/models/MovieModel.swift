@@ -25,6 +25,8 @@ protocol MovieModel {
     
     func getCredits(movieId : Int, onSuccess : @escaping([ActorVO],[ActorVO]) -> Void, onFailure: @escaping (Error) -> Void)
     
+    func searchMovie(query : String, onSuccess : @escaping([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void)
+    
     //database
     
     func getAllMoviesFromDatabase() -> [MovieVO]
@@ -33,9 +35,11 @@ protocol MovieModel {
     func getPopularMoviesFromDatabase() -> [MovieVO]
     func getTopRatedMoviesFromDatabase() -> [MovieVO]
     
+    
     //database with observable
     
     func getNowPlayingMoviesFromDatabaseObservable() -> Observable<[MovieVO]>
     func getPopularMoviesFromDatabaseObservable() -> Observable<[MovieVO]>
     func getTopRatedMoviesFromDatabaseObservable() -> Observable<[MovieVO]>
+    
 }

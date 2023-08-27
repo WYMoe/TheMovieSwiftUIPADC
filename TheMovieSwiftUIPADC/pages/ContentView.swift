@@ -21,6 +21,8 @@ struct ContentView: View {
     @State var mGenres : [GenreVO]? = nil
     @State var mMoviesByGenre : [MovieVO]? = nil
     @State var mActors : [ActorVO]? = nil
+    
+    @State var isPresented : Bool = false
 
     let disposeBag = DisposeBag()
     var body: some View {
@@ -32,7 +34,7 @@ struct ContentView: View {
                 
                 VStack(alignment: .leading, spacing: 0.0){
                     //appbar
-                    AppBarView()
+                    AppBarView(isPresented: $isPresented)
                     ScrollView(.vertical){
                         
                         VStack(alignment:.leading){
@@ -95,6 +97,9 @@ struct ContentView: View {
             }
             .navigationDestination(for: MovieVO.self) { movie in
                 MovieDetailScreen(movieId: movie.id ?? 0)
+            }
+            .navigationDestination(isPresented: $isPresented) {
+                SearchScreen()
             }
             
             
@@ -202,6 +207,7 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct AppBarView: View {
+    @Binding var isPresented : Bool
     var body: some View {
         HStack{
             //menu icon
@@ -223,6 +229,9 @@ struct AppBarView: View {
                 .resizable()
                 .foregroundColor(.white)
                 .frame(width: MARGIN_LARGE, height: MARGIN_LARGE)
+                .onTapGesture {
+                    isPresented = true
+                }
         }.padding([.leading,.trailing],MARGIN_CARD_MEDIUM_2)
     }
 }

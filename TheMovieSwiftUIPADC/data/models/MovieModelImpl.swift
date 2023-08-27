@@ -8,6 +8,8 @@
 import Foundation
 import RxSwift
 struct MovieModelImpl : MovieModel {
+
+   
   
     
    
@@ -139,7 +141,6 @@ struct MovieModelImpl : MovieModel {
     }
     
     func getCredits(movieId: Int, onSuccess: @escaping ([ActorVO], [ActorVO]) -> Void, onFailure: @escaping (Error) -> Void) {
-      //  mDataAgent.getCredits(movieId: movieId, onSuccess: onSuccess, onFailure: onFailure)
         
         mDataAgent.getCredits(movieId: movieId)
             .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
@@ -154,6 +155,20 @@ struct MovieModelImpl : MovieModel {
             }).disposed(by: disposeBag)
     }
     
+    func searchMovie(query: String, onSuccess: @escaping ([MovieVO]) -> Void, onFailure: @escaping (Error) -> Void) {
+        mDataAgent.searchMovie(query: query)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
+                movies in
+                onSuccess(movies)
+                
+            }, onError: {
+                error in
+                onFailure(error)
+            })
+            .disposed(by: disposeBag)
+    }
     
     //database
     func getAllMoviesFromDatabase() -> [MovieVO] {
