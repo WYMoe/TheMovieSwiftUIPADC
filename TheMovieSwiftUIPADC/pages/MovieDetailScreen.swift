@@ -14,47 +14,46 @@ struct MovieDetailScreen: View {
     // dismiss
     @Environment(\.presentationMode) var presentationMode
     
-    // model
-    let mMovieModel : MovieModel = MovieModelImpl.shared
     
-    //state
-    @State var mMovieVO : MovieVO?
-    @State var mCasts : [ActorVO]?
-    @State var mCrews : [ActorVO]?
+    @StateObject var mDetailViewModel : MovieDetailViewModel
+    
+    init( movieId : Int? ){
+        _mDetailViewModel = StateObject(wrappedValue: MovieDetailViewModel(movieId : movieId))
+    }
     
     var body: some View {
         ZStack {
             Color(PRIMARY_DARK_COLOR)
-            if mMovieVO == nil {
+            if mDetailViewModel.mMovieVO == nil {
                 EmptyView()
             } else {
                 ScrollView(.vertical){
                     VStack(alignment:.leading){
                         
                         //app bar
-                        DetailsAppBarView(mMovieVO: mMovieVO,onTapBack: {
+                        DetailsAppBarView(mMovieVO: mDetailViewModel.mMovieVO,onTapBack: {
                             presentationMode.wrappedValue.dismiss()
                         })
                         
                         //time,genre and fav
-                        TimeGenreAndFavView(mMovieVO: mMovieVO)
+                        TimeGenreAndFavView(mMovieVO: mDetailViewModel.mMovieVO)
                         
                         //storyline
-                        StorylineSectionView(mMovieVO: mMovieVO)
+                        StorylineSectionView(mMovieVO: mDetailViewModel.mMovieVO)
                         
                         //actors
-                        ActorsOrCreatorsListView(mActors: mCasts,label: LABEL_DETAILS_ACTOR,moreLabel: "")
+                        ActorsOrCreatorsListView(mActors: mDetailViewModel.mCasts,label: LABEL_DETAILS_ACTOR,moreLabel: "")
                             .padding(EdgeInsets(top: MARGIN_LARGE, leading: MARGIN_CARD_MEDIUM_2, bottom: MARGIN_MEDIUM_2, trailing: MARGIN_CARD_MEDIUM_2))
                             .background(Color(PRIMARY_COLOR))
                             .padding(.top,MARGIN_MEDIUM_2)
                         
                         //about film
                         
-                        AboutFilmSectionView(mMovieVO:mMovieVO)
+                        AboutFilmSectionView(mMovieVO:mDetailViewModel.mMovieVO)
                         
                         //creator
                         
-                        ActorsOrCreatorsListView(mActors: mCrews,label:LABEL_CREATORS,moreLabel: LABEL_MORE_CREATORS)
+                        ActorsOrCreatorsListView(mActors: mDetailViewModel.mCrews,label:LABEL_CREATORS,moreLabel: LABEL_MORE_CREATORS)
                             .padding(EdgeInsets(top: MARGIN_LARGE, leading: MARGIN_CARD_MEDIUM_2, bottom: MARGIN_MEDIUM_2, trailing: MARGIN_CARD_MEDIUM_2))
                             .background(Color(PRIMARY_COLOR))
                             .padding(.top,MARGIN_MEDIUM_2)
@@ -63,45 +62,15 @@ struct MovieDetailScreen: View {
                 }
             }
         }.edgesIgnoringSafeArea([.top,.bottom])
-            .onAppear{
-                requestData()
-            }
-            .navigationBarBackButtonHidden(true)
+        
+         .navigationBarBackButtonHidden(true)
     }
-    func requestData(){
-        guard let movieId = self.movieId else {
-            return
-        }
-        
- 
-        
-        //database
-        self.mMovieVO = mMovieModel.getMovieByIdFromDatabase(id: movieId)
-      
-        //detail
-        mMovieModel.getMovieDetails(movieId: movieId) { movieDetailVO in
-            self.mMovieVO = movieDetailVO
-          
-        } onFailure: { error in
-            print(error)
-            
-        }
-        
-        //credit
-        mMovieModel.getCredits(movieId: movieId) { casts, crews in
-            self.mCasts = casts
-            self.mCrews = crews
-        } onFailure: { error in
-            
-        }
 
-       
-    }
 }
 
 struct MovieDetailScreen_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetailScreen().previewLayout(.fixed(width: 500, height: 2000))
+        MovieDetailScreen(movieId: 0).previewLayout(.fixed(width: 500, height: 2000))
     }
 }
 

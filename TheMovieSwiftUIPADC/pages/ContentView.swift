@@ -8,21 +8,10 @@
 import SwiftUI
 import RxSwift
 struct ContentView: View {
-    //navigation
- //   @State var isShowDetails: Bool = false
-    
-    //data model
-    let mMovieModel : MovieModel = MovieModelImpl.shared
-    
-    //state variables
-    @State var mNowPlayingMovies : [MovieVO]? = nil
-    @State var mPopularMovies : [MovieVO]? = nil
-    @State var mTopRatedMovies : [MovieVO]? = nil
-    @State var mGenres : [GenreVO]? = nil
-    @State var mMoviesByGenre : [MovieVO]? = nil
-    @State var mActors : [ActorVO]? = nil
-    
-    @State var isPresented : Bool = false
+
+    //view model
+    @StateObject var mViewModel = ContentViewModel()
+   
 
     let disposeBag = DisposeBag()
     var body: some View {
@@ -34,17 +23,15 @@ struct ContentView: View {
                 
                 VStack(alignment: .leading, spacing: 0.0){
                     //appbar
-                    AppBarView(isPresented: $isPresented)
+                    AppBarView(isPresented: $mViewModel.isPresented)
                     ScrollView(.vertical){
                         
                         VStack(alignment:.leading){
                             //banner view
-                            BannerSectionView(mNowPlayingMovies: mNowPlayingMovies) {
-                            //    isShowDetails = true
-                            }
+                            BannerSectionView(mNowPlayingMovies: mViewModel.mNowPlayingMovies)
                             
                             //popular movie list
-                            PopularMovieSectionView(mPopularMovies: mPopularMovies)
+                            PopularMovieSectionView(mPopularMovies: mViewModel.mPopularMovies)
                             
                             //checkmovieshowtime section
                             CheckMovieShowtimesSectionView()
@@ -54,33 +41,24 @@ struct ContentView: View {
                             
                             //genre section
                             VStack(spacing:0.0) {
-                                GenreTabLayoutView(genres: mGenres,onTapGenre: { genreId in
-                                    mGenres = mGenres?.map({ iteratedGenre in
-                                        if genreId == iteratedGenre.id {
-                                            return GenreVO(id: iteratedGenre.id,name: iteratedGenre.name,
-                                                           isSelected:true)
-                                        } else {
-                                            return GenreVO(id:iteratedGenre.id,name: iteratedGenre.name,
-                                                           isSelected:false)
-                                        }
-                                    })
-                                    self.getMoviesByGenre(genreId: genreId)
+                                GenreTabLayoutView(genres: mViewModel.mGenres,onTapGenre: { genreId in
+                                    self.mViewModel.onTapGenre(genreId: genreId)
                                     
                                 }).padding([.leading,.trailing],MARGIN_CARD_MEDIUM_2)
                                 
                                 
-                                HorizontalMovieListView(mMovieList: mMoviesByGenre).padding([.top,.bottom],MARGIN_MEDIUM_3)
+                                HorizontalMovieListView(mMovieList: mViewModel.mMoviesByGenre).padding([.top,.bottom],MARGIN_MEDIUM_3)
                                     .background(Color(PRIMARY_DARK_COLOR))
                             }
                             
                             //showcase section
-                            ShowcaseSectionView(mTopRatedMovies: mTopRatedMovies)
+                            ShowcaseSectionView(mTopRatedMovies: mViewModel.mTopRatedMovies)
                             
                             //spacer
                             Spacer().frame(height: MARGIN_LARGE)
                             
                             //actors section
-                            ActorsOrCreatorsListView(mActors: mActors,label: LABEL_ACTORS,moreLabel: LABEL_MOREACTORS)
+                            ActorsOrCreatorsListView(mActors: mViewModel.mActors,label: LABEL_ACTORS,moreLabel: LABEL_MOREACTORS)
                                 .padding([.top,.bottom],MARGIN_MEDIUM_3)
                                 .background(Color(PRIMARY_DARK_COLOR))
                             
@@ -92,13 +70,10 @@ struct ContentView: View {
                   
             }
             .edgesIgnoringSafeArea([.top,.bottom])
-            .onAppear{
-                requestData()
-            }
             .navigationDestination(for: MovieVO.self) { movie in
                 MovieDetailScreen(movieId: movie.id ?? 0)
             }
-            .navigationDestination(isPresented: $isPresented) {
+            .navigationDestination(isPresented: $mViewModel.isPresented) {
                 SearchScreen()
             }
             
@@ -110,94 +85,7 @@ struct ContentView: View {
         
     }
     
-    func requestData(){
-        
-        
-        //database
-        mMovieModel.getNowPlayingMoviesFromDatabaseObservable()
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: {
-                nowPlayingMovies in
-                self.mNowPlayingMovies = nowPlayingMovies
-            })
-            .disposed(by: disposeBag)
-        
-        mMovieModel.getTopRatedMoviesFromDatabaseObservable()
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: {
-                topRatedMovies in
-                self.mTopRatedMovies = topRatedMovies
-            })
-            .disposed(by: disposeBag)
-        
-        mMovieModel.getPopularMoviesFromDatabaseObservable()
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: {
-                popularMovies in
-                self.mPopularMovies = popularMovies
-            })
-            .disposed(by: disposeBag)
-        
-        //now playing movies
-        mMovieModel.getNowPlayingMovies(page: 1) { _ in
-            
-        } onFailure: { error in
-            
-        }
 
-        
-        //popular movies
-        mMovieModel.getPopularMovies(page: 1) { _ in
-           
-        } onFailure: { error in
-        }
-        
-        //top rated movies
-        mMovieModel.getTopRatedMovies(page: 1) { _ in
-         
-        } onFailure: { error in
-            
-        }
-        
-        //genres
-        mMovieModel.getGenres { genres in
-            self.mGenres = genres.enumerated().map({ index,genre in
-             
-                if index == 0 {
-                   
-                    return  GenreVO(id: genre.id, name: genre.name, isSelected: true)
-                } else {
-                    return genre
-                }
-                
-                
-            })
-            self.getMoviesByGenre(genreId: mGenres?.first?.id ?? 0)
-          
-        } onFailure: { error in
-           
-        }
-        
-      
-        
-        //actors
-        mMovieModel.getActors { actors in
-            self.mActors = actors
-        } onFailure: { error in
-         //   print(error)
-        }
-
-    }
-    
-    func getMoviesByGenre(genreId:Int) {
-        mMovieModel.getMoviesByGenre(genreId: genreId) { movies in
-            self.mMoviesByGenre = movies 
-        
-        } onFailure: { error in
-            
-        }
-
-    }
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -240,12 +128,12 @@ struct AppBarView: View {
 
 struct BannerSectionView: View {
     
-    var onTapMovie: () -> Void
+   
     var mNowPlayingMovies  : [MovieVO]?
     
-    init(mNowPlayingMovies : [MovieVO]?, onTapMovie:@escaping ()->Void) {
+    init(mNowPlayingMovies : [MovieVO]?) {
         
-        self.onTapMovie = onTapMovie
+        
         self.mNowPlayingMovies = mNowPlayingMovies
         //UIKit code
         UIPageControl.appearance().pageIndicatorTintColor = .gray
