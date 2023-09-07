@@ -13,6 +13,7 @@ class ContentViewModel : ObservableObject {
     //data model
     let mMovieModel : MovieModel = MovieModelImpl.shared
     
+    
     //state variables
     @Published var mNowPlayingMovies : [MovieVO]? = nil
     @Published var mPopularMovies : [MovieVO]? = nil

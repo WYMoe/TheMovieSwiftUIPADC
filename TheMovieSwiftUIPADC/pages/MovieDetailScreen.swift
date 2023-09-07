@@ -15,45 +15,46 @@ struct MovieDetailScreen: View {
     @Environment(\.presentationMode) var presentationMode
     
     
-    @StateObject var mDetailViewModel : MovieDetailViewModel
+  //  @StateObject var mDetailViewModel : MovieDetailViewModel
+    @EnvironmentObject var appStore : AppStore
     
-    init( movieId : Int? ){
-        _mDetailViewModel = StateObject(wrappedValue: MovieDetailViewModel(movieId : movieId))
-    }
+//    init( movieId : Int? ){
+//        _mDetailViewModel = StateObject(wrappedValue: MovieDetailViewModel(movieId : movieId))
+//    }
     
     var body: some View {
         ZStack {
             Color(PRIMARY_DARK_COLOR)
-            if mDetailViewModel.mMovieVO == nil {
+            if ((appStore.state.movieDetails?.id ?? -1)  != movieId ) {
                 EmptyView()
             } else {
                 ScrollView(.vertical){
                     VStack(alignment:.leading){
                         
                         //app bar
-                        DetailsAppBarView(mMovieVO: mDetailViewModel.mMovieVO,onTapBack: {
+                        DetailsAppBarView(mMovieVO: appStore.state.movieDetails,onTapBack: {
                             presentationMode.wrappedValue.dismiss()
                         })
                         
                         //time,genre and fav
-                        TimeGenreAndFavView(mMovieVO: mDetailViewModel.mMovieVO)
+                        TimeGenreAndFavView(mMovieVO: appStore.state.movieDetails)
                         
                         //storyline
-                        StorylineSectionView(mMovieVO: mDetailViewModel.mMovieVO)
+                        StorylineSectionView(mMovieVO:appStore.state.movieDetails)
                         
                         //actors
-                        ActorsOrCreatorsListView(mActors: mDetailViewModel.mCasts,label: LABEL_DETAILS_ACTOR,moreLabel: "")
+                        ActorsOrCreatorsListView(mActors: appStore.state.casts,label: LABEL_DETAILS_ACTOR,moreLabel: "")
                             .padding(EdgeInsets(top: MARGIN_LARGE, leading: MARGIN_CARD_MEDIUM_2, bottom: MARGIN_MEDIUM_2, trailing: MARGIN_CARD_MEDIUM_2))
                             .background(Color(PRIMARY_COLOR))
                             .padding(.top,MARGIN_MEDIUM_2)
                         
                         //about film
                         
-                        AboutFilmSectionView(mMovieVO:mDetailViewModel.mMovieVO)
+                        AboutFilmSectionView(mMovieVO:appStore.state.movieDetails)
                         
                         //creator
                         
-                        ActorsOrCreatorsListView(mActors: mDetailViewModel.mCrews,label:LABEL_CREATORS,moreLabel: LABEL_MORE_CREATORS)
+                        ActorsOrCreatorsListView(mActors: appStore.state.crews,label:LABEL_CREATORS,moreLabel: LABEL_MORE_CREATORS)
                             .padding(EdgeInsets(top: MARGIN_LARGE, leading: MARGIN_CARD_MEDIUM_2, bottom: MARGIN_MEDIUM_2, trailing: MARGIN_CARD_MEDIUM_2))
                             .background(Color(PRIMARY_COLOR))
                             .padding(.top,MARGIN_MEDIUM_2)
@@ -62,7 +63,10 @@ struct MovieDetailScreen: View {
                 }
             }
         }.edgesIgnoringSafeArea([.top,.bottom])
-        
+            .onAppear{
+                appStore.dispatchAction(action: .getMovieDetails(movieId: movieId ?? -1))
+                appStore.dispatchAction(action: .getCreditsByMovie(movieId: movieId ?? -1))
+            }
          .navigationBarBackButtonHidden(true)
     }
 

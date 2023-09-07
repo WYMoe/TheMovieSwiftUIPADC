@@ -50,7 +50,23 @@ struct GenreVO : Codable {
 //        case name
 //    }
     
+    
 
     
 
+}
+
+
+extension Array where Element == GenreVO {
+    func selectGenreAndReturnArray(withId id: Int) -> [GenreVO] {
+        return self.map{ genreVO in
+            if genreVO.id == id {
+                let updatedGenre = GenreVO(id: genreVO.id, name: genreVO.name, isSelected:  true)
+                return updatedGenre
+            } else {
+                let updatedGenre = GenreVO(id: genreVO.id, name: genreVO.name, isSelected:  false)
+                return updatedGenre
+            }
+        }
+    }
 }

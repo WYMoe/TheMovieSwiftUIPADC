@@ -10,10 +10,12 @@ import RxSwift
 struct ContentView: View {
 
     //view model
-    @StateObject var mViewModel = ContentViewModel()
+    //@StateObject var mViewModel = ContentViewModel()
    
-
-    let disposeBag = DisposeBag()
+    @EnvironmentObject var appStore : AppStore
+    
+    @State var isPresented : Bool = false
+    
     var body: some View {
         NavigationStack {
             ZStack{
@@ -23,15 +25,15 @@ struct ContentView: View {
                 
                 VStack(alignment: .leading, spacing: 0.0){
                     //appbar
-                    AppBarView(isPresented: $mViewModel.isPresented)
+                    AppBarView(isPresented: $isPresented)
                     ScrollView(.vertical){
                         
                         VStack(alignment:.leading){
                             //banner view
-                            BannerSectionView(mNowPlayingMovies: mViewModel.mNowPlayingMovies)
+                            BannerSectionView(mNowPlayingMovies: appStore.state.nowPlayingMovies)
                             
                             //popular movie list
-                            PopularMovieSectionView(mPopularMovies: mViewModel.mPopularMovies)
+                            PopularMovieSectionView(mPopularMovies: appStore.state.popularMovies)
                             
                             //checkmovieshowtime section
                             CheckMovieShowtimesSectionView()
@@ -41,24 +43,28 @@ struct ContentView: View {
                             
                             //genre section
                             VStack(spacing:0.0) {
-                                GenreTabLayoutView(genres: mViewModel.mGenres,onTapGenre: { genreId in
-                                    self.mViewModel.onTapGenre(genreId: genreId)
+                                GenreTabLayoutView(genres: appStore.state.genres,onTapGenre: { genreId in
+                                   //dispatch select genre action
+                                    appStore.dispatchAction(action: .setSelectedGenre(genreId: genreId))
+                                    
+                                    //dispatch get movies by genres
+                                    appStore.dispatchAction(action: .getMoviesByGenre(genreId: genreId))
                                     
                                 }).padding([.leading,.trailing],MARGIN_CARD_MEDIUM_2)
                                 
                                 
-                                HorizontalMovieListView(mMovieList: mViewModel.mMoviesByGenre).padding([.top,.bottom],MARGIN_MEDIUM_3)
+                                HorizontalMovieListView(mMovieList: appStore.state.moviesByGenre).padding([.top,.bottom],MARGIN_MEDIUM_3)
                                     .background(Color(PRIMARY_DARK_COLOR))
                             }
                             
                             //showcase section
-                            ShowcaseSectionView(mTopRatedMovies: mViewModel.mTopRatedMovies)
+                            ShowcaseSectionView(mTopRatedMovies: appStore.state.topRatedMovies)
                             
                             //spacer
                             Spacer().frame(height: MARGIN_LARGE)
                             
                             //actors section
-                            ActorsOrCreatorsListView(mActors: mViewModel.mActors,label: LABEL_ACTORS,moreLabel: LABEL_MOREACTORS)
+                            ActorsOrCreatorsListView(mActors: appStore.state.actors,label: LABEL_ACTORS,moreLabel: LABEL_MOREACTORS)
                                 .padding([.top,.bottom],MARGIN_MEDIUM_3)
                                 .background(Color(PRIMARY_DARK_COLOR))
                             
@@ -70,10 +76,21 @@ struct ContentView: View {
                   
             }
             .edgesIgnoringSafeArea([.top,.bottom])
+            .onAppear{
+                appStore.dispatchAction(action: .getnowPlayingMovies)
+                appStore.dispatchAction(action: .startObservingNowPlayingMovies)
+                appStore.dispatchAction(action: .getPopularMovies)
+                appStore.dispatchAction(action: .startObservingPopularMovies)
+                appStore.dispatchAction(action: .getTopRatedMovies)
+                appStore.dispatchAction(action: .startObservingTopRatedMovies)
+                appStore.dispatchAction(action: .getGenres)
+                appStore.dispatchAction(action: .getActors)
+            }
             .navigationDestination(for: MovieVO.self) { movie in
                 MovieDetailScreen(movieId: movie.id ?? 0)
+                    .environmentObject(appStore)
             }
-            .navigationDestination(isPresented: $mViewModel.isPresented) {
+            .navigationDestination(isPresented: $isPresented) {
                 SearchScreen()
             }
             
